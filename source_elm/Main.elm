@@ -1,4 +1,4 @@
-module Main exposing (..)
+modudle Main exposing (..)
 
 
 add : Int -> Int -> Int
