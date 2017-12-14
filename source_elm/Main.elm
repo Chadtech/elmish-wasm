@@ -1,6 +1,6 @@
-modudle Main exposing (..)
+module Main exposing (addTwo)
 
 
-add : Int -> Int -> Int
-add a b =
+addTwo : Int -> Int -> Int
+addTwo a b =
     a + b
