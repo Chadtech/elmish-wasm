@@ -43,7 +43,7 @@ addTwo a b =
 
 ```
 
-So thats what I am trying to do.
+Making a compiler that compiles Elmish to wat is what I am trying to do.
 
 
 # How to compile Elmish to Wat
@@ -73,3 +73,4 @@ type Type
     | Bool_
 
 ```
+
