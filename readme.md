@@ -71,5 +71,5 @@ type Type
     = Int_
     | Float_
     | Bool_
-    
-``
+
+```
