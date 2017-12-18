@@ -6,6 +6,8 @@ import qualified Data.Map as Map
 import Flow
 import Text.Regex.Posix
 import qualified Data.ByteString.Char8 as C
+import Data (Module, Problem(..), makeModule)
+
 
 main :: IO ()
 main = do
@@ -17,38 +19,54 @@ handleArgs :: [ String ] -> IO ()
 handleArgs [] = putStrLn "Error : No file was given. Try typing \"elmish fileName.elm\""
 handleArgs (fn : _) = do
     file <- Byte.readFile fn
-    putStrLn (show (getModuleName (C.unpack file)))
+    putStrLn (handleResult (getModule (C.unpack file)))
 
 
-getModuleName :: String -> Maybe String
+handleResult :: Either Problem Module -> String
+handleResult result =
+    case result of
+        Left problem ->
+            handleProblem problem
+
+        Right module_ ->
+            "Yeah module"
+
+
+handleProblem :: Problem -> String
+handleProblem problem =
+    case problem of
+        NoModuleName ->
+            "Error : This file has no module name. The first line should start with the word \"module\" followed by the module name."
+
+
+getModule :: String -> Either Problem Module
+getModule file =
+    makeModule
+        |> parse file getModuleName
+
+
+parse :: String -> (String -> Either Problem a) -> (a -> b) -> Either Problem b
+parse file parser ctor =
+    case parser file of
+        Left problem ->
+            Left problem 
+
+        Right moduleName ->
+            Right (ctor moduleName)
+
+
+getModuleName :: String -> Either Problem String
 getModuleName file =
     case file =~ "module " of
         ("", "module ", after) ->
-            Just (firstWordRegex after)
+            Right (firstWordRegex after)
 
         _ ->
-            Nothing
+            Left NoModuleName
 
 
 firstWordRegex :: String -> String
 firstWordRegex file =
     file =~ "([^ ]+)"
 
-
-data Module =
-    Module
-    { moduleName :: String
-    , functions :: Map.Map String Function
-    }
-
-
-data Function =
-    Function
-    { functionName :: String
-    , typeSignature :: [ Type ]
-    , exposed :: Bool
-    }
-
-
-data Type = Int_ | Float_ | Bool_
 
