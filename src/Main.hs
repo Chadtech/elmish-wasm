@@ -6,7 +6,7 @@ import qualified Data.Map as Map
 import Flow
 import Text.Regex.Posix
 import qualified Data.ByteString.Char8 as C
-import Data (Module, Problem(..), makeModule)
+import Data (Module(..), Problem(..))
 
 
 main :: IO ()
@@ -29,7 +29,7 @@ handleResult result =
             handleProblem problem
 
         Right module_ ->
-            "Yeah module"
+            moduleName module_
 
 
 handleProblem :: Problem -> String
@@ -41,7 +41,7 @@ handleProblem problem =
 
 getModule :: String -> Either Problem Module
 getModule file =
-    makeModule
+    Module
         |> parse file getModuleName
 
 

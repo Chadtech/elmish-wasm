@@ -1,6 +1,5 @@
 module Data 
-    ( Module
-    , makeModule
+    ( Module(..)
     , Function
     , Type(..)
     , Problem(..)
@@ -9,18 +8,12 @@ module Data
 import qualified Data.Map as Map
 import Flow
 
+
 data Module =
     Module
     { moduleName :: String
     -- , functions :: Map.Map String Function
     }
-
-
-makeModule :: 
-    String -> 
-    Module
-makeModule name =
-    Module name
 
 
 data Function =
