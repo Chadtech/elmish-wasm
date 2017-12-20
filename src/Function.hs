@@ -8,6 +8,6 @@ import Data (Type(..))
 data Model =
     Ctor
     { name :: String
-    , purportedTypeSignature :: [ Type ]
+    , purportedTypeSignature :: Maybe [ Type ]
     , derivedTypeSignature :: [ Type ]
     }
