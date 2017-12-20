@@ -6,7 +6,8 @@ import qualified Data.Map as Map
 import Flow
 import Text.Regex.Posix
 import qualified Data.ByteString.Char8 as C
-import Data (Module(..), Problem(..))
+import qualified Module
+import Data (Problem(..))
 
 
 main :: IO ()
@@ -19,17 +20,21 @@ handleArgs :: [ String ] -> IO ()
 handleArgs [] = putStrLn "Error : No file was given. Try typing \"elmish fileName.elm\""
 handleArgs (fn : _) = do
     file <- Byte.readFile fn
-    putStrLn (handleResult (getModule (C.unpack file)))
+    file
+        |> C.unpack
+        |> getModule
+        |> handleResult
+        |> putStrLn
 
 
-handleResult :: Either Problem Module -> String
+handleResult :: Either Problem Module.Model -> String
 handleResult result =
     case result of
         Left problem ->
             handleProblem problem
 
         Right module_ ->
-            moduleName module_
+            Module.name module_
 
 
 handleProblem :: Problem -> String
@@ -39,9 +44,9 @@ handleProblem problem =
             "Error : This file has no module name. The first line should start with the word \"module\" followed by the module name."
 
 
-getModule :: String -> Either Problem Module
+getModule :: String -> Either Problem Module.Model
 getModule file =
-    Module
+    Module.Ctor
         |> parse file getModuleName
 
 
