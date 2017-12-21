@@ -6,7 +6,7 @@ import qualified Data.Map as Map
 import Flow
 import qualified Data.ByteString.Char8 as C
 import qualified Module
-import Data (Problem(..))
+import Data (Problem(..), Result(..))
 import qualified Read
 import qualified Write
 
@@ -29,13 +29,13 @@ handleArgs (fn : _) = do
         |> handleResult
 
 
-handleResult :: Either Problem Module.Model -> IO ()
+handleResult :: Result Module.Model -> IO ()
 handleResult result =
     case result of
-        Left problem ->
+        Problem problem ->
             putStrLn (handleProblem problem)
 
-        Right module_ ->
+        Ok module_ ->
             Write.wat module_
 
 

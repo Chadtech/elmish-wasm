@@ -3,39 +3,31 @@ module Read
     where
 
 import qualified Module
-import Data (Problem(..))
+import Data (Problem(..), Result(..))
 import Flow
 import Text.Regex.Posix
+import qualified Data.List as List
 
 
-parse :: String -> (String -> Either Problem a) -> (a -> b) -> Either Problem b
-parse fileData parser ctor =
-    case parser fileData of
-        Left problem ->
-            Left problem 
+construct :: String -> (String -> Result a) -> Result (a -> b) -> Result b
+construct fileData reader step =
+    case step of
+        Problem problem ->
+            Problem problem
 
-        Right moduleName ->
-            Right (ctor moduleName)
+        Ok ctor ->
+            case reader fileData of
+                Problem problem ->
+                    Problem problem
+
+                Ok part ->
+                    Ok (ctor part)
 
 
-file :: String -> Either Problem Module.Model
+file :: String -> Result Module.Model
 file fileData =
-    Module.Ctor
-        |> parse fileData getModuleName
+    Ok Module.Ctor
+        |> construct fileData Module.readName
+        |> construct fileData Module.readExposedFunctions
 
 
-getModuleName :: String -> Either Problem String
-getModuleName fileData =
-    case fileData =~ "module " of
-        ("", "module ", after) ->
-            Right (firstWordRegex after)
-
-        _ ->
-            Left NoModuleName
-
--- REGEX --
-
-
-firstWordRegex :: String -> String
-firstWordRegex fileData =
-    fileData =~ "([^ ]+)"

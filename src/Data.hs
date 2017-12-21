@@ -1,6 +1,7 @@
 module Data 
     ( Type(..)
     , Problem(..)
+    , Result(..)
     ) where
 
 import qualified Data.Map as Map
@@ -15,3 +16,9 @@ data Type
 
 data Problem
     = NoModuleName
+    | InvalidExposedFunctions
+
+
+data Result a
+    = Problem Problem
+    | Ok a
