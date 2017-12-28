@@ -10,6 +10,7 @@ import Data (Problem(..), Result(..))
 import qualified Read
 import qualified Write
 
+
 -- MAIN --
 
 
@@ -44,9 +45,4 @@ handleProblem problem =
     case problem of
         NoModuleName ->
             "Error : This file has no module name. The first line should start with the word \"module\" followed by the module name."
-
-
-
-
-
 

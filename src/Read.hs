@@ -7,6 +7,8 @@ import Data (Problem(..), Result(..))
 import Flow
 import Text.Regex.Posix
 import qualified Data.List as List
+import Data.List.Split (splitOn)
+import qualified File as File
 
 
 construct :: String -> (String -> Result a) -> Result (a -> b) -> Result b
@@ -26,8 +28,12 @@ construct fileData reader step =
 
 file :: String -> Result Module.Model
 file fileData =
+    let
+        file =
+            File.fromString fileData
+    in
     Ok Module.Ctor
         |> construct fileData Module.readName
         |> construct fileData Module.readExposedFunctions
-
+        |> construct fileData Module.readFunctions
 
