@@ -2,7 +2,6 @@ module Main where
 
 import qualified System.Environment as System
 import qualified Data.ByteString as Byte
-import qualified Data.Map as Map
 import Flow
 import qualified Data.ByteString.Char8 as C
 import qualified Module

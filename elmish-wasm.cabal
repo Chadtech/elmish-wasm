@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: bf2ef9a4961839339a027fc850c7e23144eadba2ebbf5827603ea6de406b8ffd
+-- hash: 8931e4e0a9e8402d8c94ed6c1279104a0ae7fdaaa991bb07d01f51bd644b6124
 
 name:           elmish-wasm
 version:        0.1.0.0
@@ -31,8 +31,19 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , flow
+    , regex-posix
+    , split
+    , text
   exposed-modules:
-      Lib
+      Data
+      File
+      Function
+      Module
+      Read
+      Util
+      Write
   other-modules:
       Paths_elmish_wasm
   default-language: Haskell2010
@@ -44,7 +55,12 @@ executable elmish-wasm-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
     , elmish-wasm
+    , flow
+    , regex-posix
+    , split
+    , text
   other-modules:
       Paths_elmish_wasm
   default-language: Haskell2010
@@ -57,7 +73,12 @@ test-suite elmish-wasm-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
     , elmish-wasm
+    , flow
+    , regex-posix
+    , split
+    , text
   other-modules:
       Paths_elmish_wasm
   default-language: Haskell2010

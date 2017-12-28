@@ -21,9 +21,15 @@ description:         Please see the README on Github at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- flow
+- text
+- regex-posix
+- split
+- bytestring
 
 library:
   source-dirs: src
+
 
 executables:
   elmish-wasm-exe:

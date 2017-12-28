@@ -4,7 +4,6 @@ module Data
     , Result(..)
     ) where
 
-import qualified Data.Map as Map
 import Flow
 
 

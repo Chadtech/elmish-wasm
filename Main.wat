@@ -1,0 +1,1 @@
+( module ( export "addThree" (func $addThree)) ( export "addTwo" (func $addTwo)) )
