@@ -45,3 +45,8 @@ handleProblem problem =
         NoModuleName ->
             "Error : This file has no module name. The first line should start with the word \"module\" followed by the module name."
 
+        InvalidExposedFunctions -> 
+            "Error : Modules expose functions, but there is something wrong with the syntax in how this modules exposed functions are set"
+
+        FileIsEmpty ->
+            "Error : This file looks to be totally empty"

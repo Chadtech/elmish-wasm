@@ -15,7 +15,10 @@ data Type
 
 data Problem
     = NoModuleName
+    | FileHasNoModuleSection
     | InvalidExposedFunctions
+    | FileIsEmpty
+
 
 
 data Result a

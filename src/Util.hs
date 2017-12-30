@@ -1,7 +1,7 @@
 module Util 
-    ( firstWordRegex
+    ( firstWord
     , trim
-    , consoleLog
+    , log_
     )
     where
 
@@ -11,18 +11,19 @@ import qualified Data.Char as Char
 import qualified Debug.Trace as Debug
 import Flow
 
+
 trim :: String -> String
 trim = 
     List.dropWhileEnd Char.isSpace 
         >> List.dropWhile Char.isSpace
 
 
-firstWordRegex :: String -> String
-firstWordRegex fileData =
-    fileData =~ "([^ ]+)"
+firstWord :: String -> Maybe String
+firstWord fileData =
+    fileData =~~ "([^ ]+)"
 
 
-
-consoleLog :: String -> (a -> String) -> a -> a
-consoleLog msg toString x =
+log_ :: String -> (a -> String) -> a -> a
+log_ msg toString x =
     Debug.trace (msg ++ " : " ++ (toString x)) x
+

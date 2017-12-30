@@ -28,12 +28,13 @@ construct fileData reader step =
 
 file :: String -> Result Module.Model
 file fileData =
-    let
-        file =
-            File.fromString fileData
-    in
-    Ok Module.Ctor
-        |> construct fileData Module.readName
-        |> construct fileData Module.readExposedFunctions
-        |> construct fileData Module.readFunctions
+    case File.fromString fileData of
+        Ok file ->
+            Ok Module.Ctor
+                |> construct (File.module_ file) Module.readName
+                |> construct (File.module_ file) Module.readExposedFunctions
+                |> construct (File.functions file) Module.readFunctions
+        
+        Problem problem ->
+            Problem problem
 
