@@ -17,18 +17,20 @@ A lot of people talk about Web Assembly as if its C++ that runs in the browser. 
   (func $addTwo (param i32 i32) (result i32)
     get_local 0                     
     get_local 1          
-    i32.add)       
-  (export "addTwo" (func $addTwo)))
+    i32.add
+  )       
+  (export "addTwo" (func $addTwo))
+)
 ```
 
 Reading that code line by line, it goes something like this..
 
 ```
-Theres a function called addTwo, it takes two int parameters and returns and int. 
+Theres a function called addTwo it takes two int parameters and returns and int. 
 First it gets the first parameter,
 then it gets the second parameter,
-and thenthen it adds the parameters. 
-Export addTwo into JavaScript world and name it "addTwo"."
+and then it adds the parameters. 
+Export addTwo into JavaScript world and name it "addTwo".
 ```
 
 So to start small, lets make something that merely looks like Elm- we will call it "Elmish"- and compile it to wat. I imagine an Elmish program that compiles to the wat code above looking like this:
@@ -56,14 +58,13 @@ Heres some pseudo Elm code showing how the program can be stored in memory..
 
 type alias Module =
     { name : String
-    , functions : Dict String Function
+    , functions : List Function
     }
 
 
 type alias Function =
     { name : String
     , typeSignature : List Type
-    , exposed : Bool
     }
 
 
