@@ -1,6 +1,7 @@
 module Write where
 
 import qualified Module
+import qualified Data.Module as Module
 import qualified Data.List as List
 
 

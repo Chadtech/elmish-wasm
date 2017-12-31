@@ -23,6 +23,9 @@ firstWord fileData =
     fileData =~~ "([^ ]+)"
 
 
+-- DEBUG --
+
+
 log_ :: String -> (a -> String) -> a -> a
 log_ msg toString x =
     Debug.trace (msg ++ " : " ++ (toString x)) x

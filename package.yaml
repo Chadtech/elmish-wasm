@@ -1,10 +1,10 @@
 name:                elmish-wasm
 version:             0.1.0.0
-github:              "githubuser/elmish-wasm"
+github:              "chadtech/elmish-wasm"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2017 Author name here"
+author:              "Chadtech"
+maintainer:          "chadtech0@gmail.com"
+copyright:           "2017 Chadtech"
 
 extra-source-files:
 - README.md
@@ -26,6 +26,7 @@ dependencies:
 - regex-posix
 - split
 - bytestring
+- ilist
 
 library:
   source-dirs: src

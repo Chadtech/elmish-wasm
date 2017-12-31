@@ -2,17 +2,17 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8931e4e0a9e8402d8c94ed6c1279104a0ae7fdaaa991bb07d01f51bd644b6124
+-- hash: ffffed75438c1733bd393bf0c9540f8b4844d3320c3f1e8321eaab24ea70e588
 
 name:           elmish-wasm
 version:        0.1.0.0
 synopsis:       Short description of your package
 description:    Please see the README on Github at <https://github.com/githubuser/elmish-wasm#readme>
-homepage:       https://github.com/githubuser/elmish-wasm#readme
-bug-reports:    https://github.com/githubuser/elmish-wasm/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2017 Author name here
+homepage:       https://github.com/chadtech/elmish-wasm#readme
+bug-reports:    https://github.com/chadtech/elmish-wasm/issues
+author:         Chadtech
+maintainer:     chadtech0@gmail.com
+copyright:      2017 Chadtech
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -24,7 +24,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/elmish-wasm
+  location: https://github.com/chadtech/elmish-wasm
 
 library
   hs-source-dirs:
@@ -33,15 +33,21 @@ library
       base >=4.7 && <5
     , bytestring
     , flow
+    , ilist
     , regex-posix
     , split
     , text
   exposed-modules:
       Data
+      Data.Module
       File
       Function
+      Line
       Module
+      Module.Data
+      Part
       Read
+      Result
       Util
       Write
   other-modules:
@@ -58,6 +64,7 @@ executable elmish-wasm-exe
     , bytestring
     , elmish-wasm
     , flow
+    , ilist
     , regex-posix
     , split
     , text
@@ -76,6 +83,7 @@ test-suite elmish-wasm-test
     , bytestring
     , elmish-wasm
     , flow
+    , ilist
     , regex-posix
     , split
     , text

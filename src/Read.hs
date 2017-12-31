@@ -2,16 +2,17 @@ module Read
     (file)
     where
 
+import qualified Data.Module as Module
 import qualified Module
-import Data (Problem(..), Result(..))
+import Result (Result(..), Problem(..))
 import Flow
 import Text.Regex.Posix
 import qualified Data.List as List
 import Data.List.Split (splitOn)
-import qualified File as File
+import qualified File 
 
 
-construct :: String -> (String -> Result a) -> Result (a -> b) -> Result b
+construct :: part -> (part -> Result a) -> Result (a -> b) -> Result b
 construct fileData reader step =
     case step of
         Problem problem ->
@@ -32,8 +33,8 @@ file fileData =
         Ok file ->
             Ok Module.Ctor
                 |> construct (File.module_ file) Module.readName
-                |> construct (File.module_ file) Module.readExposedFunctions
-                |> construct (File.functions file) Module.readFunctions
+                |> construct (File.module_ file) Module.readExposedParts
+                |> construct (File.parts file) Module.readParts
         
         Problem problem ->
             Problem problem

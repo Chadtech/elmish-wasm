@@ -7,36 +7,31 @@ module File
 
 import qualified Util as Util
 import qualified Data.List as List
-import Data (Result(..), Problem(..))
+import Result (Result(..), Problem(..))
 import Data.List.Split (splitOn)
 import Flow 
+import Line (Line)
+import qualified Line as Line
 
 
 data Model =
     Ctor
-    { module_ :: String
-    , imports :: Maybe String
-    , functions :: String
+    { module_ :: [Line] 
+    , imports :: [Line] 
+    , parts :: [Line]
     }
 
 
 fromString :: String -> Result Model
 fromString fileData =
-    let
-        lines =
-            fileData
-                |> splitOn "\n"
-                |> List.map Util.trim
-                |> List.filter isntEmpty
-    in
-    Ok (Ctor, lines)
+    Ok (Ctor, Line.fromString fileData)
         |> construct readModule
         |> construct readImports
-        |> construct readFunctions
+        |> construct readParts 
         |> prepareResult
 
 
-prepareResult :: Result (Model, [String]) -> Result Model
+prepareResult :: Result (Model, [Line]) -> Result Model
 prepareResult result =
     case result of
         Problem problem ->
@@ -46,7 +41,7 @@ prepareResult result =
             Ok model
 
 
-construct :: ([String] -> Result (a, [String])) -> Result ((a -> b), [String]) -> Result (b, [String]) 
+construct :: ([Line] -> Result (a, [Line])) -> Result ((a -> b), [Line]) -> Result (b, [Line]) 
 construct reader step =
     case step of
         Problem problem ->
@@ -64,62 +59,19 @@ construct reader step =
 -- READERS --
 
 
-readImports :: [String] -> Result (Maybe String, [String])
+readImports :: [Line] -> Result ([Line], [Line])
 readImports lines =
-    let
-        (imports, rest) =
-            getImports lines
-    in
-    case imports of
-        [] ->
-            Ok (Nothing, rest)
+    readImportsHelper ([], lines)
+        |> Ok
+        
 
-        _ ->
-            Ok (Just (concat imports), rest)
-
-
-readFunctions :: [String] -> Result (String, [String])
-readFunctions lines =
-    Ok (concat lines, []) 
-
-
-readModule :: [String] -> Result (String, [String])
-readModule lines =
-    case getFirstBlock lines of
-        Nothing ->
-            Problem FileHasNoModuleSection
-
-        Just (firstBlock, rest) ->
-            case firstBlock of
-                firstLine : _ ->
-                    case Util.firstWord firstLine of
-                        Just "module" ->
-                            Ok (concat firstBlock, rest)
-
-                        _ ->
-                            Problem FileHasNoModuleSection
-
-                [] ->
-                    Problem FileIsEmpty
-
-
-getImports :: [String] -> ([String], [String])
-getImports lines =
+readImportsHelper :: ([Line], [Line]) -> ([Line], [Line])
+readImportsHelper (imports, lines) =
     case lines of
-        [] ->
-            ([], [])
-
-        _ ->
-            getImportsHelper ([], lines) 
-
-
-getImportsHelper :: ([String], [String]) -> ([String], [String])
-getImportsHelper (imports, lines) =
-    case lines of
-        firstLine : rest ->
-            case Util.firstWord firstLine of
+        first : rest ->
+            case Line.firstWord first of
                 Just "import" ->
-                    getImportsHelper (firstLine : imports, rest) 
+                    readImportsHelper (first : imports, rest) 
         
                 _ ->
                     (imports, lines)
@@ -128,41 +80,28 @@ getImportsHelper (imports, lines) =
             (imports, lines)
 
 
-getFirstBlock :: [String] -> Maybe ([String], [String])
-getFirstBlock lines = 
-    case lines of
-        [] ->
-            Nothing
-
-        _ ->
-            ([], lines)
-                |> firstBlockHelper
-                |> Just
+readParts :: [Line] -> Result ([Line], [Line])
+readParts lines =
+    Ok (lines, []) 
 
 
-firstBlockHelper :: ([String], [String]) -> ([String], [String])
-firstBlockHelper (firstBlock, lines) =
-    case lines of
-        first : rest ->
-            if startsWithWhitespace first then
-                (List.reverse firstBlock, lines)
-            else
-                firstBlockHelper (first : firstBlock, rest)
+readModule :: [Line] -> Result ([Line], [Line])
+readModule lines =
+    case Line.getFirstBlock lines of
+        Nothing ->
+            Problem FileHasNoModuleSection
 
-        [] ->
-            (List.reverse firstBlock, [])
+        Just (firstBlock, rest) ->
+            case firstBlock of
+                first : _ ->
+                    case Line.firstWord first of
+                        Just "module" ->
+                            Ok (firstBlock, rest)
 
+                        _ ->
+                            Problem FileHasNoModuleSection
 
+                [] ->
+                    Problem FileIsEmpty
 
--- HELPERS --
-
-
-startsWithWhitespace :: String -> Bool
-startsWithWhitespace (' ' : rest) = True
-startsWithWhitespace _ = False
-
-
-isntEmpty :: String -> Bool
-isntEmpty "" = False
-isntEmpty _ = True
 

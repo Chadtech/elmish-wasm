@@ -4,8 +4,8 @@ import qualified System.Environment as System
 import qualified Data.ByteString as Byte
 import Flow
 import qualified Data.ByteString.Char8 as C
-import qualified Module
-import Data (Problem(..), Result(..))
+import qualified Data.Module as Module
+import Result (Problem(..), Result(..))
 import qualified Read
 import qualified Write
 

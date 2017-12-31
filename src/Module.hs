@@ -1,45 +1,36 @@
 module Module 
-    ( Model(..) 
-    , readName
-    , readExposedFunctions
-    , readFunctions
+    ( readName
+    , readExposedParts
+    , readParts
     , write
     )
     where
 
 
-import Data (Result(..), Problem(..))
+import Line (Line)
+import Result (Result(..), Problem(..))
+import qualified Result
+import qualified Line 
+import qualified Part
+import Part (Part(..))
 import Text.Regex.Posix
 import Data.List as List
 import Data.List.Split (splitOn)
 import Flow
 import qualified Util
 import qualified Function
-
-
--- TYPES --
-
-
-data Model =
-    Ctor
-    { name :: String
-    , exposing :: Exposing
-    , functions :: [ Function.Model ]
-    }
-
-
-data Exposing 
-    = All
-    | Only [ String ]
-
+import Data.Module 
+    ( Model(..)
+    , Exposing (..)
+    )
 
 
 -- READ --
 
 
-readName :: String -> Result String
-readName fileData =
-    case nameRegex fileData of
+readName :: [Line] -> Result String
+readName lines =
+    case nameRegex (Line.toString lines) of 
         ("", moduleName, _) ->
             Ok (List.drop 7 moduleName)
 
@@ -57,9 +48,9 @@ exposingRegex fileData =
     fileData =~~ "exposing[ \t\n]*\\(.*\\)"
 
 
-readExposedFunctions :: String -> Result Exposing
-readExposedFunctions fileData =
-    case nameRegex fileData of
+readExposedParts :: [Line] -> Result Exposing
+readExposedParts lines =
+    case nameRegex (Line.toString lines) of
         ("", moduleName, after) ->
             case exposingRegex after of
                 Just "(..)" ->
@@ -83,9 +74,15 @@ readExposedFunctions fileData =
             Problem NoModuleName
 
 
-readFunctions :: String -> Result [ Function.Model ]
-readFunctions fileData =
-    Ok []
+readParts :: [Line] -> Result [Part]
+readParts lines =
+    lines
+        |> Line.filterEmpties
+        |> Line.toBlocks
+        |> List.map Part.read 
+        |> Result.flatten
+
+
 
 
 -- WRITE --
@@ -108,7 +105,7 @@ writeFunctions model =
 
 writeExports :: Model -> String
 writeExports model =
-    case Module.exposing model of
+    case Data.Module.exposing model of
         All ->
             ""
 

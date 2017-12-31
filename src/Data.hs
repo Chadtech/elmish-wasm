@@ -1,10 +1,6 @@
 module Data 
-    ( Type(..)
-    , Problem(..)
-    , Result(..)
-    ) where
-
-import Flow
+    ( Type(..) ) 
+    where
 
 
 data Type 
@@ -13,14 +9,3 @@ data Type
     | Bool_
 
 
-data Problem
-    = NoModuleName
-    | FileHasNoModuleSection
-    | InvalidExposedFunctions
-    | FileIsEmpty
-
-
-
-data Result a
-    = Problem Problem
-    | Ok a
