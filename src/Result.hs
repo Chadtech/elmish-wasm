@@ -9,6 +9,7 @@ module Result
 
 import Prelude hiding (map)
 import qualified Data.List as List
+import Line (Line)
 
 
 data Problem
@@ -18,6 +19,8 @@ data Problem
     | BlockStartsWithOutFirstWord
     | BlockWasEmpty
     | FileHasNoModuleSection
+    | UnrecognizedType [Line] String
+    | TypeSignatureSyntaxIsWrong [Line]
     | None
 
 

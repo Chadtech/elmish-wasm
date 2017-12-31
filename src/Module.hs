@@ -84,7 +84,6 @@ readParts lines =
 
 
 
-
 -- WRITE --
 
 
@@ -95,12 +94,15 @@ write model =
 
 writeBody :: Model -> String
 writeBody model =
-    (writeFunctions model) ++ (writeExports model)
+    (writeParts model) ++ (writeExports model)
 
 
-writeFunctions :: Model -> String
-writeFunctions model =
-    ""
+writeParts :: Model -> String
+writeParts model =
+    model
+        |> Data.Module.parts
+        |> List.map Part.write
+        |> List.intercalate " "
 
 
 writeExports :: Model -> String

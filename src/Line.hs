@@ -6,6 +6,7 @@ module Line
     , toString
     , filterEmpties
     , firstWord
+    , regex
     , getFirstBlock
     , toBlocks
     )
@@ -61,6 +62,11 @@ filterEmpties =
 firstWord :: Line -> Maybe String
 firstWord line =
     getContent line |> Util.firstWord
+
+
+regex :: (String -> a) -> Line -> a
+regex r (Line _ str) =
+    r str
 
 
 isntEmpty :: Line -> Bool

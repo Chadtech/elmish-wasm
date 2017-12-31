@@ -5,13 +5,13 @@ module File
     where
 
 
-import qualified Util as Util
+import qualified Util 
 import qualified Data.List as List
 import Result (Result(..), Problem(..))
 import Data.List.Split (splitOn)
 import Flow 
 import Line (Line)
-import qualified Line as Line
+import qualified Line
 
 
 data Model =

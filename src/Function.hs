@@ -1,6 +1,7 @@
 module Function
     ( Model(..) 
     , read    
+    , write
     )
     where
 
@@ -10,16 +11,23 @@ import Flow
 import Prelude hiding (read)
 import Result (Problem(..), Result(..))
 import Line (Line)
+import qualified Data.List as List
 
 
 data Model =
     Ctor
-    { name :: String
-    , purportedTypeSignature :: Maybe [ Type ]
-    , derivedTypeSignature :: [ Type ]
-    }
+    { name :: String }
 
 
-read :: [Line] -> Result Model
-read block =
-    Problem None
+read :: String -> [Line] -> Result Model
+read name_ block =
+    Ok (Ctor name_)
+
+
+write :: Model -> String
+write model =
+    [ "(func"
+    , "$" ++ name model
+    , ")"
+    ]
+        |> List.intercalate " "
