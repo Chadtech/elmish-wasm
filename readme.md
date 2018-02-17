@@ -48,30 +48,9 @@ addTwo a b =
 Making a compiler that compiles Elmish to wat is what I am trying to do.
 
 
-# How to compile Elmish to Wat
+## Update : 20180217
 
-I dont know how to compile to wat, Ive never made a compiler. But I imagine it would be a two step process. The first step is reading the Elmish code and storing values like the module name, and the functions in the module. If that works without a problem, the second step is writing that program from memory to wat or wasm.
-
-Heres some pseudo Elm code showing how the program can be stored in memory..
-
-```elm
-
-type alias Module =
-    { name : String
-    , functions : List Function
-    }
+Much of what this repo did was reading Elm files with Haskell and Regex, and parsing out the syntax. Thats already what the Elm compiler does, so perhaps its not that valuable of work. Moving forward, one could just hack the Elm compiler to compile to a different target. But rather than that, maybe a different direction entirely is called for: See here: https://gist.github.com/Chadtech/c966d30613c588ef2dc45026a1e29731
 
 
-type alias Function =
-    { name : String
-    , typeSignature : List Type
-    }
-
-
-type Type
-    = Int_
-    | Float_
-    | Bool_
-
-```
 
